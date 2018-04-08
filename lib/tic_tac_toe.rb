@@ -1,7 +1,9 @@
 class TicTacToe
 
-  def board
-    @board=
+  def board(board=[" ", " ", " ", " ", " ", " ", " ", " ", " "])
+    @board=board
+  end
+  
   def position_taken?(index)
     !(@board[index].nil? || @board[index] == " ")
   end
