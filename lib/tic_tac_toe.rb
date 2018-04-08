@@ -15,15 +15,15 @@ class TicTacToe
     [2,4,6]
   ]
 
-  def won?(board)
+  def won?
     WIN_COMBINATIONS.each do |win_combination|
         win_index_1 = win_combination[0]
         win_index_2 = win_combination[1]
         win_index_3 = win_combination[2]
 
-        position_1 = board[win_index_1]
-        position_2 = board[win_index_2]
-        position_3 = board[win_index_3]
+        position_1 = @board[win_index_1]
+        position_2 = @board[win_index_2]
+        position_3 = @board[win_index_3]
 
         if (position_1 == "X" && position_2 == "X" && position_3 == "X")
           return win_combination
@@ -34,27 +34,27 @@ class TicTacToe
     false
   end
 
-  def full?(board)
-    board.all?{|index| index=='X'||index=="O"}
+  def full?
+    @board.all?{|index| index=='X'||index=="O"}
   end
 
-  def draw?(board)
-    full?(board)&&!won?(board)
+  def draw?
+    full?&&!won?
   end
 
-  def over?(board)
-    won?(board) || full?(board) || draw?(board)
+  def over?
+    won? || full? || draw?
   end
 
-  def winner(board)
-    if win_combination = won?(board)
-      board[win_combination.first]
+  def winner
+      if win_combination = won?
+      @board[win_combination.first]
     end
   end
 
-  def turn_count(board)
+  def turn_count
     counter = 0
-    board.each do |space|
+    @board.each do |space|
       if space=="X" || space=="O"
         counter += 1
       end
@@ -62,57 +62,57 @@ class TicTacToe
     return counter
   end
 
-  def current_player(board)
-    if turn_count(board)%2==1
+  def current_player
+    if turn_count%2==1
       return "O"
     else
       return "X"
     end
   end
 
-  def display_board(board)
-    puts " #{board[0]} | #{board[1]} | #{board[2]} "
+  def display_board
+    puts " #{@board[0]} | #{@board[1]} | #{@board[2]} "
     puts "-----------"
-    puts " #{board[3]} | #{board[4]} | #{board[5]} "
+    puts " #{@board[3]} | #{@board[4]} | #{@board[5]} "
     puts "-----------"
-    puts " #{board[6]} | #{board[7]} | #{board[8]} "
+    puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
   end
 
   def input_to_index(user_input)
     user_input.to_i - 1
   end
 
-  def move(board, index, player)
-    board[index] = player
+  def move(index, player)
+    @board[index] = player
   end
 
-  def position_taken?(board, location)
-    board[location] != " " && board[location] != ""
+  def position_taken?(location)
+    @board[location] != " " && @board[location] != ""
   end
 
-  def valid_move?(board, index)
-    index.between?(0,8) && !position_taken?(board, index)
+  def valid_move?(index)
+    index.between?(0,8) && !position_taken?(index)
   end
 
-  def turn(board)
+  def turn
     puts "Please enter 1-9:"
     user_input = gets
     index = input_to_index(user_input)
-    if valid_move?(board, index)
-      move(board, index, current_player(board))
-      display_board(board)
+    if valid_move?(index)
+      move(index, current_player(board))
+      display_board
     else
-      turn(board)
+      turn
     end
   end
 
-  def play(board)
-    while !over?(board)
-      turn(board)
+  def play
+    while !over?
+      turn
     end
-    if won?(board)
-      puts "Congratulations #{winner(board)}!"
-    elsif draw?(board)
+    if won?
+      puts "Congratulations #{winner}!"
+    elsif draw?
       puts "Cat's Game!"
     end
   end
